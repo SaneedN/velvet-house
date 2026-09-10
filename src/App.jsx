@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { CreditsProvider } from './context/CreditsContext.jsx'
 import Header from './components/Header.jsx'
 import GameTabs from './components/GameTabs.jsx'
-import SlotMachine from './games/SlotMachine.jsx'
-import Roulette from './games/Roulette.jsx'
 import DiceCoinflip from './games/DiceCoinflip.jsx'
+import RockPaperScissors from './games/RockPaperScissors.jsx'
+import WildSwitch from './games/WildSwitch.jsx'
 
 export default function App() {
-  const [tab, setTab] = useState('slots')
+  const [tab, setTab] = useState('dice')
 
   return (
     <CreditsProvider>
@@ -15,9 +15,9 @@ export default function App() {
         <Header />
         <GameTabs active={tab} onChange={setTab} />
 
-        {tab === 'slots' && <SlotMachine />}
-        {tab === 'roulette' && <Roulette />}
         {tab === 'dice' && <DiceCoinflip />}
+        {tab === 'rps' && <RockPaperScissors />}
+        {tab === 'uno' && <WildSwitch />}
 
         <footer className="footer">
           Demo only — every credit here is virtual. No real money is wagered, held, or paid out.
