@@ -533,6 +533,194 @@ input:focus-visible {
   max-width: 320px;
 }
 
+/* ---------- Rock, paper, scissors ---------- */
+
+.rps-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 8px;
+}
+
+.rps-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rps-slot {
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--gold-bright);
+}
+
+.rps-side-label {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.rps-vs {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+/* ---------- Wild Switch (Uno-style) ---------- */
+
+.uno-opponent-row,
+.uno-hand-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.uno-side-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.uno-back-strip {
+  display: flex;
+  gap: 4px;
+}
+
+.uno-card-back {
+  width: 26px;
+  height: 38px;
+  border-radius: 4px;
+  background: var(--panel-raised);
+  border: 1px solid var(--border-strong);
+}
+
+.uno-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.uno-pile-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.uno-draw-pile {
+  width: 62px;
+  height: 88px;
+  border-radius: 6px;
+  border: 1px dashed var(--border-strong);
+  background: var(--panel);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.uno-draw-pile:disabled {
+  opacity: 0.5;
+}
+
+.uno-pile-count {
+  font-weight: 700;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.uno-color-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.uno-color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+}
+
+.uno-color-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.uno-color-options {
+  display: flex;
+  gap: 8px;
+}
+
+.uno-color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+}
+
+.uno-color-swatch:hover {
+  border-color: var(--gold-bright);
+}
+
+.uno-hand {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.uno-card {
+  width: 62px;
+  height: 88px;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.uno-card:not(:disabled):hover {
+  transform: translateY(-6px);
+}
+
+.uno-card:disabled {
+  opacity: 0.35;
+}
+
+.uno-card-small {
+  width: 54px;
+  height: 78px;
+}
+
+.uno-card-label {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #fff8ea;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
 /* ---------- Footer ---------- */
 
 .footer {
