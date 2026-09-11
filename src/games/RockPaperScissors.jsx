@@ -81,6 +81,7 @@ export default function RockPaperScissors() {
 
       <hr className="divider" />
 
+
       <div className="field" style={{ marginBottom: 20 }}>
         <label>Your move</label>
         <div className="bet-type-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
@@ -89,6 +90,8 @@ export default function RockPaperScissors() {
               key={m.id}
               className={`bet-choice${playerMove === m.id && busy ? ' selected' : ''}`}
               onClick={() => play(m.id)}
+
+              
               disabled={busy || credits < bet}
             >
               {m.label}
