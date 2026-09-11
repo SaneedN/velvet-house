@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useCredits } from '../context/CreditsContext.jsx'
+import { useHistory } from '../context/HistoryContext.jsx'
 
 const BETS = [10, 25, 50, 100]
 const DICE_FACES = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅']
 
 export default function DiceCoinflip() {
   const { credits, adjustCredits } = useCredits()
+  const { addEntry } = useHistory()
   const [mode, setMode] = useState('coin') // coin | dice
   const [bet, setBet] = useState(25)
   const [busy, setBusy] = useState(false)
@@ -36,8 +38,10 @@ export default function DiceCoinflip() {
         const winnings = bet * 2
         adjustCredits(winnings)
         setResult({ win: true, text: `The coin lands on ${outcome}. You win ${winnings.toLocaleString()} credits.` })
+        addEntry({ game: 'Dice & Coin', outcome: 'win', delta: bet, note: `Coin flip — called ${outcome} correctly` })
       } else {
         setResult({ win: false, text: `The coin lands on ${outcome}. No win.` })
+        addEntry({ game: 'Dice & Coin', outcome: 'lose', delta: -bet, note: `Coin flip — landed on ${outcome}` })
       }
     }, 1100)
   }
@@ -62,8 +66,10 @@ export default function DiceCoinflip() {
           const winnings = bet * 6
           adjustCredits(winnings)
           setResult({ win: true, text: `The die shows ${outcome}. You win ${winnings.toLocaleString()} credits.` })
+          addEntry({ game: 'Dice & Coin', outcome: 'win', delta: bet * 5, note: `Dice roll — called ${outcome} correctly` })
         } else {
           setResult({ win: false, text: `The die shows ${outcome}. No win.` })
+          addEntry({ game: 'Dice & Coin', outcome: 'lose', delta: -bet, note: `Dice roll — landed on ${outcome}` })
         }
       }
     }, 70)

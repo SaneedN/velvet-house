@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useCredits } from '../context/CreditsContext.jsx'
+import { useHistory } from '../context/HistoryContext.jsx'
 
 const BETS = [10, 25, 50, 100]
 const MOVES = [
@@ -18,6 +19,7 @@ function beats(a, b) {
 
 export default function RockPaperScissors() {
   const { credits, adjustCredits } = useCredits()
+  const { addEntry } = useHistory()
   const [bet, setBet] = useState(25)
   const [busy, setBusy] = useState(false)
   const [playerMove, setPlayerMove] = useState(null)
@@ -36,16 +38,21 @@ export default function RockPaperScissors() {
       const house = MOVES[Math.floor(Math.random() * MOVES.length)].id
       setHouseMove(house)
       setBusy(false)
+      const moveLabel = MOVES.find((m) => m.id === move).label
+      const houseLabel = MOVES.find((m) => m.id === house).label
 
       if (move === house) {
         adjustCredits(bet)
-        setResult({ win: null, text: `Both play ${MOVES.find((m) => m.id === move).label.toLowerCase()}. Bet returned.` })
+        setResult({ win: null, text: `Both play ${moveLabel.toLowerCase()}. Bet returned.` })
+        addEntry({ game: 'Rock, Paper, Scissors', outcome: 'push', delta: 0, note: `Tied on ${moveLabel.toLowerCase()}` })
       } else if (beats(move, house)) {
         const winnings = bet * 2
         adjustCredits(winnings)
-        setResult({ win: true, text: `${MOVES.find((m) => m.id === move).label} beats ${MOVES.find((m) => m.id === house).label.toLowerCase()}. You win ${winnings.toLocaleString()} credits.` })
+        setResult({ win: true, text: `${moveLabel} beats ${houseLabel.toLowerCase()}. You win ${winnings.toLocaleString()} credits.` })
+        addEntry({ game: 'Rock, Paper, Scissors', outcome: 'win', delta: bet, note: `${moveLabel} beat ${houseLabel.toLowerCase()}` })
       } else {
-        setResult({ win: false, text: `${MOVES.find((m) => m.id === house).label} beats your ${MOVES.find((m) => m.id === move).label.toLowerCase()}. No win.` })
+        setResult({ win: false, text: `${houseLabel} beats your ${moveLabel.toLowerCase()}. No win.` })
+        addEntry({ game: 'Rock, Paper, Scissors', outcome: 'lose', delta: -bet, note: `${houseLabel} beat your ${moveLabel.toLowerCase()}` })
       }
     }, 700)
   }
@@ -81,7 +88,6 @@ export default function RockPaperScissors() {
 
       <hr className="divider" />
 
-
       <div className="field" style={{ marginBottom: 20 }}>
         <label>Your move</label>
         <div className="bet-type-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
@@ -90,8 +96,6 @@ export default function RockPaperScissors() {
               key={m.id}
               className={`bet-choice${playerMove === m.id && busy ? ' selected' : ''}`}
               onClick={() => play(m.id)}
-
-              
               disabled={busy || credits < bet}
             >
               {m.label}

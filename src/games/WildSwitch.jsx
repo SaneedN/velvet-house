@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useCredits } from '../context/CreditsContext.jsx'
+import { useHistory } from '../context/HistoryContext.jsx'
 import {
   COLORS,
   COLOR_HEX,
@@ -34,6 +35,7 @@ function Card({ card, onClick, disabled, small }) {
 
 export default function WildSwitch() {
   const { credits, adjustCredits } = useCredits()
+  const { addEntry } = useHistory()
   const [stage, setStage] = useState('setup') // setup | playing
   const [stake, setStake] = useState(25)
 
@@ -110,6 +112,7 @@ export default function WildSwitch() {
       setWinner('computer')
       setMessage('Computer plays its last card. This round goes to the house.')
       setBusy(false)
+      addEntry({ game: 'Wild Switch', outcome: 'lose', delta: -stake, note: 'Computer emptied its hand first' })
       return
     }
 
@@ -152,6 +155,7 @@ export default function WildSwitch() {
       setGameOver(true)
       setWinner('player')
       setMessage(`You play your last card. You win ${winnings.toLocaleString()} credits.`)
+      addEntry({ game: 'Wild Switch', outcome: 'win', delta: stake, note: 'Emptied your hand first' })
       return
     }
 
