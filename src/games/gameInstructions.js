@@ -24,7 +24,7 @@ export const GAME_INSTRUCTIONS = {
     steps: [
       'Switch between Coin flip and Dice roll with the toggle.',
       'Coin flip: call heads or tails for an even-money payout.',
-      'Dice roll: call the exact face (1–6) for a 6× payout.',
+      'Dice roll: call the exact face (1-6) for a 6x payout.',
       'Pick your bet amount, then play.',
     ],
   },
