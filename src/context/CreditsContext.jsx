@@ -1,26 +1,35 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { useAuth } from './AuthContext.jsx'
 
 const CreditsContext = createContext(null)
-const STORAGE_KEY = 'velvet-house-credits'
 const STARTING_CREDITS = 1000
 
+function keyFor(email) {
+  return `velvet-house-credits:${email || 'guest'}`
+}
+
 export function CreditsProvider({ children }) {
-  const [credits, setCredits] = useState(() => {
-    try {
-      const saved = window.localStorage.getItem(STORAGE_KEY)
-      return saved !== null ? JSON.parse(saved) : STARTING_CREDITS
-    } catch {
-      return STARTING_CREDITS
-    }
-  })
+  const { user } = useAuth()
+  const [credits, setCredits] = useState(STARTING_CREDITS)
 
   useEffect(() => {
+    if (!user) return
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(credits))
+      const saved = window.localStorage.getItem(keyFor(user.email))
+      setCredits(saved !== null ? JSON.parse(saved) : STARTING_CREDITS)
+    } catch {
+      setCredits(STARTING_CREDITS)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
+    try {
+      window.localStorage.setItem(keyFor(user.email), JSON.stringify(credits))
     } catch {
       // storage unavailable — game still works for the session
     }
-  }, [credits])
+  }, [credits, user])
 
   const adjustCredits = useCallback((delta) => {
     setCredits((c) => Math.max(0, c + delta))
