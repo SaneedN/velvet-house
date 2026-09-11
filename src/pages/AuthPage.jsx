@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import { useAuth } from '../context/AuthContext.jsx'
 
+const EMPTY_LOGIN = { name: '', email: '', password: '', repeatPassword: '' }
+const EMPTY_REGISTER = { name: '', email: '', password: '' }
+const EMPTY_FORGOT = { email: '', newPassword: '' }
+
 export default function AuthPage() {
   const { login, register, resetPassword } = useAuth()
   const [mode, setMode] = useState('login') // login | register | forgot
-  const [form, setForm] = useState({ name: '', email: '', password: '', repeatPassword: '', newPassword: '' })
+
+  const [loginForm, setLoginForm] = useState(EMPTY_LOGIN)
+  const [registerForm, setRegisterForm] = useState(EMPTY_REGISTER)
+  const [forgotForm, setForgotForm] = useState(EMPTY_FORGOT)
+
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
-
-  function update(field, value) {
-    setForm((f) => ({ ...f, [field]: value }))
-  }
 
   function switchMode(next) {
     setMode(next)
@@ -18,29 +22,47 @@ export default function AuthPage() {
     setNotice('')
   }
 
+  function updateLogin(field, value) {
+    setLoginForm((f) => ({ ...f, [field]: value }))
+  }
+  function updateRegister(field, value) {
+    setRegisterForm((f) => ({ ...f, [field]: value }))
+  }
+  function updateForgot(field, value) {
+    setForgotForm((f) => ({ ...f, [field]: value }))
+  }
+
   function handleLogin(e) {
     e.preventDefault()
     setError('')
-    const res = login(form)
+    const res = login(loginForm)
     if (!res.ok) setError(res.error)
   }
 
   function handleRegister(e) {
     e.preventDefault()
     setError('')
-    const res = register(form)
-    if (!res.ok) setError(res.error)
+    const res = register(registerForm)
+    if (!res.ok) {
+      setError(res.error)
+      return
+    }
+    setLoginForm({ ...EMPTY_LOGIN, email: registerForm.email })
+    setRegisterForm(EMPTY_REGISTER)
+    setNotice('Account created — log in to continue.')
+    setMode('login')
   }
 
   function handleForgot(e) {
     e.preventDefault()
     setError('')
     setNotice('')
-    const res = resetPassword({ email: form.email, newPassword: form.newPassword })
+    const res = resetPassword({ email: forgotForm.email, newPassword: forgotForm.newPassword })
     if (!res.ok) {
       setError(res.error)
       return
     }
+    setForgotForm(EMPTY_FORGOT)
     setNotice('Password updated — you can log in now.')
     setMode('login')
   }
@@ -71,19 +93,19 @@ export default function AuthPage() {
           <form className="auth-form" onSubmit={handleLogin}>
             <div className="field">
               <label>Name</label>
-              <input className="auth-input" type="text" value={form.name} onChange={(e) => update('name', e.target.value)} />
+              <input className="auth-input" type="text" value={loginForm.name} onChange={(e) => updateLogin('name', e.target.value)} />
             </div>
             <div className="field">
               <label>Email</label>
-              <input className="auth-input" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} />
+              <input className="auth-input" type="email" value={loginForm.email} onChange={(e) => updateLogin('email', e.target.value)} />
             </div>
             <div className="field">
               <label>Password</label>
-              <input className="auth-input" type="password" value={form.password} onChange={(e) => update('password', e.target.value)} />
+              <input className="auth-input" type="password" value={loginForm.password} onChange={(e) => updateLogin('password', e.target.value)} />
             </div>
             <div className="field">
               <label>Repeat password</label>
-              <input className="auth-input" type="password" value={form.repeatPassword} onChange={(e) => update('repeatPassword', e.target.value)} />
+              <input className="auth-input" type="password" value={loginForm.repeatPassword} onChange={(e) => updateLogin('repeatPassword', e.target.value)} />
             </div>
             <button className="auth-forgot-link" type="button" onClick={() => switchMode('forgot')}>
               Forgot password?
@@ -98,15 +120,15 @@ export default function AuthPage() {
           <form className="auth-form" onSubmit={handleRegister}>
             <div className="field">
               <label>Name</label>
-              <input className="auth-input" type="text" value={form.name} onChange={(e) => update('name', e.target.value)} />
+              <input className="auth-input" type="text" value={registerForm.name} onChange={(e) => updateRegister('name', e.target.value)} />
             </div>
             <div className="field">
               <label>Email</label>
-              <input className="auth-input" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} />
+              <input className="auth-input" type="email" value={registerForm.email} onChange={(e) => updateRegister('email', e.target.value)} />
             </div>
             <div className="field">
               <label>Password</label>
-              <input className="auth-input" type="password" value={form.password} onChange={(e) => update('password', e.target.value)} />
+              <input className="auth-input" type="password" value={registerForm.password} onChange={(e) => updateRegister('password', e.target.value)} />
             </div>
             <button className="primary-btn auth-submit" type="submit">
               Sign up
@@ -121,11 +143,11 @@ export default function AuthPage() {
             </p>
             <div className="field">
               <label>Email</label>
-              <input className="auth-input" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} />
+              <input className="auth-input" type="email" value={forgotForm.email} onChange={(e) => updateForgot('email', e.target.value)} />
             </div>
             <div className="field">
               <label>New password</label>
-              <input className="auth-input" type="password" value={form.newPassword} onChange={(e) => update('newPassword', e.target.value)} />
+              <input className="auth-input" type="password" value={forgotForm.newPassword} onChange={(e) => updateForgot('newPassword', e.target.value)} />
             </div>
             <button className="primary-btn auth-submit" type="submit">
               Update password

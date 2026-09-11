@@ -5,7 +5,7 @@ import { useCountUp } from '../hooks/useCountUp.js'
 
 export default function TopBar() {
   const { credits } = useCredits()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const displayCredits = useCountUp(credits)
   const [flash, setFlash] = useState(false)
 
@@ -39,6 +39,13 @@ export default function TopBar() {
         </div>
 
         <div className="avatar" aria-hidden="true">{initial}</div>
+
+        <button className="icon-btn" aria-label="Log out" title="Log out" onClick={logout}>
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M14 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 12h11m0 0-3.5-3.5M20 12l-3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
       </div>
     </header>
   )

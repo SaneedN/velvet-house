@@ -14,6 +14,8 @@ import DiceCoinflip from './games/DiceCoinflip.jsx'
 import RockPaperScissors from './games/RockPaperScissors.jsx'
 import WildSwitch from './games/WildSwitch.jsx'
 import { GAME_INSTRUCTIONS } from './games/gameInstructions.js'
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
 
 const GAMES = [
   {

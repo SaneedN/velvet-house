@@ -50,8 +50,6 @@ export function AuthProvider({ children }) {
     }
     users[cleanEmail] = { name: name.trim(), email: cleanEmail, password }
     saveUsers(users)
-    window.localStorage.setItem(SESSION_KEY, cleanEmail)
-    setUser({ name: name.trim(), email: cleanEmail })
     return { ok: true }
   }, [])
 
