@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useCredits } from '../context/CreditsContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 import { useCountUp } from '../hooks/useCountUp.js'
 
-export default function TopBar({ name = 'Saneed' }) {
+export default function TopBar() {
   const { credits } = useCredits()
+  const { user } = useAuth()
   const displayCredits = useCountUp(credits)
   const [flash, setFlash] = useState(false)
 
@@ -13,6 +15,7 @@ export default function TopBar({ name = 'Saneed' }) {
     return () => clearTimeout(t)
   }, [credits])
 
+  const name = user?.name || 'Player'
   const initial = name.trim().charAt(0).toUpperCase() || '?'
 
   return (
